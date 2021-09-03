@@ -5,12 +5,13 @@ search = () => {
   const inputValue = inputField.value;
 
   inputField.value = "";
+  if (inputValue !== "") {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_key}`;
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_key}`;
-
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => displayWeather(data));
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => displayWeather(data));
+  }
 };
 
 // loadData = ()=> {
@@ -25,18 +26,20 @@ search = () => {
 // loadData();
 
 displayWeather = (data) => {
-  const city = document.getElementById("city");
-  const tempp = document.getElementById("temp");
-  const tempType = document.getElementById("tempType");
-  const imgIcon = document.getElementById("icon");
+  if (data.name !== undefined) {
+    const city = document.getElementById("city");
+    const tempp = document.getElementById("temp");
+    const tempType = document.getElementById("tempType");
+    const imgIcon = document.getElementById("icon");
 
-  const curruntTemp = data?.main?.temp - 273.15;
-  const temp = curruntTemp.toFixed(2);
+    const curruntTemp = data?.main?.temp - 273.15;
+    const temp = curruntTemp.toFixed(2);
 
-  tempp.innerText = temp;
-  city.innerText = data.name;
-  tempType.innerText = data.weather[0].main;
-  const url = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-  imgIcon.setAttribute("src", url);
-  console.log(temp);
+    tempp.innerText = temp;
+    city.innerText = data.name;
+    tempType.innerText = data.weather[0].main;
+    const url = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    imgIcon.setAttribute("src", url);
+    console.log(temp);
+  }
 };
